@@ -7,7 +7,5 @@ name = "video_human_detection"
 version = "1.0.0"
 requires-python = ">=3.11"
 
-dependencies = [
-  "ultralytics",
-  "opencv-python"
-]
+[tool.setuptools]
+packages = ["video_human_detection"]
