@@ -1,3 +1,4 @@
+import os
 from collections import defaultdict
 from typing import Optional
 
@@ -17,7 +18,6 @@ def run(
     infile: str,
     outfile: str,
     model: str = "yolo11s.pt",
-    weights: Optional[str] = None,
     draw_path=True,
     print_progress=True,
     device: str | torch.device = "cuda" if torch.cuda.is_available() else "cpu",
@@ -26,35 +26,30 @@ def run(
 
     :param infile: Path to the input video file.
     :param outfile: Path to the output video file.
-    :param model: The model to predict with, can be a local file path or a model name from Ultralytics HUB.
-    :param weights: Optional path to custom pre-trained weights, \
-        if not specified, YOLO loads weights trained on COCO dataset.\
-        Those weights can be downloaded manually from https://docs.ultralytics.com/models/yolo11/#__tabbed_1_1
+    :param model: The model to predict with, can be a local file path or a model name from Ultralytics HUB.\
+        The default models from ultralitics HUB are trained on the COCO dataset.\
+        They can also be downloaded manually from https://docs.ultralytics.com/models/yolo11/#__tabbed_1_1
     :param print_progress: Whether to print number of video frames predicted and total number of frames. defaults to True
     :param draw_path: Whether to draw the movement path of each human on the video, defaults to True
     :param print_progress: Whether to print number of video frames predicted and total number of frames. defaults to True
     """
 
     # load weights
-    if weights is not None:
-        net = YOLO(task="detect", verbose=False)
-        pretrained_weights = torch.load(weights)
-        net.load(pretrained_weights)
-
-    else:
-        net = YOLO(
-            model=model,
-            task="detect",
-            verbose=False,
-        )
-    net = net.to(device)
+    net = YOLO(
+        model=model,
+        task="detect",
+        verbose=False,
+    ).to(device)
 
     # read video file
-    cap = cv2.VideoCapture(infile)
+    if not os.path.isfile(infile):
+        raise FileNotFoundError(f"File {infile} does not exist.")
+
+    cap = cv2.VideoCapture(infile) # pylint:disable=E1101
 
     # create a renderer
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS) # pylint:disable=E1101
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # pylint:disable=E1101
     cur_frame = 0
     renderer = OpenCVRenderer(outfile=outfile, fps=fps)
 
