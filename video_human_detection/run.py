@@ -93,7 +93,7 @@ def run(
                     points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
 
                     # draw paths on the image array
-                    cv2.polylines(
+                    cv2.polylines( # pylint:disable=E1101
                         annotated_frame,
                         [points],
                         isClosed=False,
