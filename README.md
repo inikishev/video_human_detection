@@ -24,7 +24,6 @@ from video_human_detection import run
 run(
   infile = 'path/to/input.mp4',
   outfile = 'path/to/output.mp4',
-  model = 'yolo11n.pt', # название модели с Ultralitics HUB либо путь к загруженной локально модели
-  weights = 'path/to/weights.pt', # путь к кастомным весам
+  model = 'yolo11n.pt', # название предобучнной модели с Ultralitics HUB либо путь к загруженной локально модели
 )
 ```
