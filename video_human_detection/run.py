@@ -97,13 +97,13 @@ def run(
                         track.pop(0)
                     points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
 
-                    # put bounding box on the image array
+                    # draw paths on the image array
                     cv2.polylines(
                         annotated_frame,
                         [points],
                         isClosed=False,
                         color=(230, 230, 230),
-                        thickness=10,
+                        thickness=5,
                     )
 
             # add annotated frame to renderer

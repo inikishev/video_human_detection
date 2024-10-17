@@ -6,6 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "video_human_detection"
 version = "1.0.0"
 requires-python = ">=3.11"
+dynamic = ["dependencies"]
 
 [tool.setuptools]
 packages = ["video_human_detection"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
